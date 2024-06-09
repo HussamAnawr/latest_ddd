@@ -1,6 +1,7 @@
 psycopg2-binary
 django
 dj-database-url
+django-ninja
 
 # tests
 pytest

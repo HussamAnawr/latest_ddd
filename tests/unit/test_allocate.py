@@ -29,7 +29,7 @@ def test_retuen_allocated_batch_ref():
     shipment_batch = Batch('shipment-batch-123', "RETRO_CLOCK", 100, eta=tomorrow)
     line = OrderLine('order-123', "RETRO_CLOCK", 10)
     allocation = allocate(line, [in_stock_batch, shipment_batch])
-    assert allocation ==  in_stock_batch.referance
+    assert allocation ==  in_stock_batch.reference
 
 def test_raises_out_of_stock_exception_if_cannot_allocate():
     batch = Batch('batch1', "SMALL-FORK", 10, eta=today)

@@ -8,12 +8,16 @@ class Batch(models.Model):
     qty = models.IntegerField()
     eta = models.DateField(null=True, blank=True)
 
+    def __str__(self) -> str:
+        return f"<BATCH({self.id}) reference:{self.reference} sku:{self.sku} qty:{self.qty} eta:{self.eta}>"
+    
+
     @staticmethod
     def update_from_domain(batch: domain_model.Batch):
         try:
-            b = Batch.objects.get(reference=batch.referance)
+            b = Batch.objects.get(reference=batch.reference)
         except Batch.DoesNotExist:
-            b = Batch(reference=batch.referance)
+            b = Batch(reference=batch.reference)
         b.sku = batch.sku
         b.qty = batch._purchased_quantity
         b.eta = batch.eta
@@ -36,6 +40,8 @@ class OrderLine(models.Model):
     sku = models.CharField(max_length=255)
     qty = models.IntegerField()
     
+    def __str__(self) -> str:
+        return f"<ORDER_LINE orderid:{self.orderid} sku:{self.sku} qty:{self.qty}>"
     
     def to_domain(self):
         return domain_model.OrderLine(orderid=self.orderid, sku=self.sku, qty=self.qty)
@@ -51,6 +57,9 @@ class OrderLine(models.Model):
 class Allocation(models.Model):
     batch = models.ForeignKey(Batch, on_delete=models.CASCADE, related_name="allocations")
     line = models.ForeignKey(OrderLine, on_delete=models.CASCADE,)
+
+    def __str__(self) -> str:
+        return f"batch: {self.batch}, line: {self.line}"
 
     @staticmethod
     def from_domain(domain_line: domain_model.OrderLine, django_batch: Batch):
