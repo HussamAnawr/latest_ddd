@@ -28,11 +28,10 @@ class DjangoRepository(AbstractRepository):
     def _get(self, reference):
         return django_model.Batch.objects.filter(reference=reference).first().to_domain()
     
-    def get(self, reference):
-        return django_model.Batch.objects.filter(reference=reference).first().to_domain()
-    
     def list(self):
-        return [b.to_domain() for b in django_model.Batch.objects.all()]
+        batches = [b.to_domain() for b in django_model.Batch.objects.all()]
+        self.seen = self.seen.union(set(batches))
+        return batches
     
     def update(self, batch: model.Batch):
          django_model.Batch.update_from_domain(batch)

@@ -1,6 +1,6 @@
 from allocation.domain.model import Batch, OrderLine
 from allocation.domain import model
-from allocation.adapters.repository import AbstractRepository
+from .unit_of_work import AbstractUnitOfWork
 
 
 class InvalidSku(Exception):
@@ -13,10 +13,13 @@ def allocate(
         orderid: str,
         sku: str,
         qty: int,
-        repo: AbstractRepository) -> str:
-    batches = repo.list()
-    if not is_valid_sku(sku, batches):
-        raise InvalidSku(f"Invalid sku {sku}")
-    line = OrderLine(orderid, sku, qty)
-    batchref = model.allocate(line, batches)
+        uow: AbstractUnitOfWork) -> str:
+    with uow:
+        batches = uow.batches.list()
+        if not is_valid_sku(sku, batches):
+            raise InvalidSku(f"Invalid sku {sku}")
+        line = OrderLine(orderid, sku, qty)
+        batchref = model.allocate(line, batches)
+        uow.commit()
+        # b = uow.batches.get(batchref)
     return batchref

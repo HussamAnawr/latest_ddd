@@ -34,7 +34,7 @@ class Batch:
         return hash(self.reference)
     
     def __repr__(self) -> str:
-        return f"<Batch {self.reference}>"
+        return f"<Batch {self.reference} {self._allocations}>"
     
     def __eq__(self, other: Batch) -> bool:
         if not isinstance(other, Batch):

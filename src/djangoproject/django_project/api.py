@@ -1,8 +1,9 @@
 from ninja import NinjaAPI, Schema
 from ninja import Router
-from allocation.adapters.repository import DjangoRepository
 from allocation.service_layer import services
+from allocation.service_layer.unit_of_work import DjangoUintOfWork
 from allocation.domain.model import OutOfStock
+
 import os, django
 os.environ["DJANGO_SETTINGS_MODULE"] = "djangoproject.django_project.settings"
 django.setup()
@@ -19,7 +20,7 @@ class AllocateIn(Schema):
 @router.post("allocate")
 def allocate(request, data: AllocateIn):
     try:
-        batchref = services.allocate(data.orderid, data.sku, data.qty, DjangoRepository())
+        batchref = services.allocate(data.orderid, data.sku, data.qty, DjangoUintOfWork())
     except (OutOfStock, services.InvalidSku) as e:
         return {"message": (str(e))}
     
