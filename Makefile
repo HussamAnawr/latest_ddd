@@ -14,7 +14,7 @@ down:
 	docker-compose down --remove-orphans
 
 test: up
-	docker-compose run --rm --no-deps --entrypoint=pytest app /tests/unit /tests/integration --create-db
+	docker-compose run --rm --no-deps --entrypoint=pytest app /tests/unit /tests/integration /tests/e2e --create-db
 # test: up
 # 	docker-compose run --rm --no-deps --entrypoint=pytest app /tests/unit /tests/integration /tests/e2e
 

@@ -7,8 +7,7 @@ import os
 import django
 from allocation.adapters.repository import DjangoRepository
 
-os.environ["DJANGO_SETTINGS_MODULE"] = "djangoproject.django_project.settings"
-django.setup()
+
 
 # @csrf_exempt
 # def allocate(request):

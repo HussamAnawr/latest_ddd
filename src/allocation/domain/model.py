@@ -19,7 +19,7 @@ def allocate(line: OrderLine, batches: list[Batch]) -> str:
 class OrderLine:
     orderid: str
     sku: str
-    qty: str
+    qty: int
 
 class Batch:
 
